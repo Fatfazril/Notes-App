@@ -1,12 +1,23 @@
-const dotenv = require('dotenv');
-const connectDB = require('./config/db');
-const app = require('./app');
+require("dotenv").config();
+const connectDB = require("./config/db");
+const redisClient = require("./config/redis");
+const sessionMiddleware = require("./config/session");
+const createApp = require("./app");
 
-dotenv.config();
+const PORT = process.env.PORT || 4000;
 
-// Connect to Database
-connectDB();
+(async () => {
+  try {
+    await connectDB();
+    await redisClient.connect();
 
-app.listen(process.env.PORT || 4000, () => {
-    console.log(`Server is running on port ${process.env.PORT || 4000}`);
-});
+    const app = createApp(sessionMiddleware);
+
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  } catch (err) {
+    console.error("Server failed to start:", err);
+    process.exit(1);
+  }
+})();
