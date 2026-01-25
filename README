@@ -1,3 +1,4 @@
+
 # Notes App – Fullstack Project
 
 A simple fullstack Notes application built with **Node.js (Express)** for the backend and **React + Vite** for the frontend.
@@ -66,3 +67,21 @@ notes-app/
 //   const notes = await Note.find();
 //   res.json(notes);
 // };
+=======
+Building Notes Api using node js + mongodb + redis
+
+
+docs/
+├─ swagger.js                # Main Swagger configuration
+├─ paths/                    # API endpoints definition
+│  └─ note.path.js
+├─ components/
+│  ├─ schemas/               # Request & response schemas
+│  │  ├─ note.schema.js
+│  │  └─ response.schema.js
+│  ├─ responses/             # Reusable error responses
+│  │  └─ error.response.js
+│  └─ security/              # Authentication schemes
+│     └─ jwt.security.js
+
+
