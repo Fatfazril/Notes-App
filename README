@@ -1,0 +1,68 @@
+# Notes App – Fullstack Project
+
+A simple fullstack Notes application built with **Node.js (Express)** for the backend and **React + Vite** for the frontend.
+
+This project demonstrates clean API architecture, RESTful design, and frontend–backend integration.
+
+---
+
+## ✨ Features
+- Create, read, update, delete notes (CRUD)
+- REST API with Express
+- MongoDB as database
+- Clean folder structure (Controller–Service–Model)
+- React frontend with reusable components
+- Environment-based configuration
+
+---
+
+## 🧱 Tech Stack
+
+### Backend
+- Node.js
+- Express.js
+- MongoDB (Mongoose)
+- REST API
+- JWT Authentication *(optional / future improvement)*
+
+### Frontend
+- React.js
+- Vite
+- Fetch / Axios
+- Tailwind CSS *(optional)*
+
+---
+
+## 📂 Project Structure
+
+notes-app/
+├── backend/
+│ ├── src/
+│ │ ├── controllers/
+│ │ ├── routes/
+│ │ ├── models/
+│ │ ├── services/
+│ │ └── app.js
+│ ├── package.json
+│ └── .env.example
+│
+├── frontend/
+│ ├── src/
+│ │ ├── components/
+│ │ ├── pages/
+│ │ ├── services/
+│ │ └── main.jsx
+│ ├── package.json
+│ └── .env.example
+│
+└── README.md
+
+# 🧩 2️⃣ Flow API: Backend → Frontend (REAL PRACTICE)
+
+### Contoh API Backend
+```js
+// backend/src/controllers/noteController.js
+// exports.getNotes = async (req, res) => {
+//   const notes = await Note.find();
+//   res.json(notes);
+// };
