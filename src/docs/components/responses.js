@@ -5,7 +5,7 @@ module.exports = {
       'application/json': {
         example: {
           status: 'fail',
-          message: 'Note not found',
+          message: 'Resource not found',
         },
       },
     },
@@ -13,5 +13,13 @@ module.exports = {
 
   ServerError: {
     description: 'Internal server error',
+    content: {
+      'application/json': {
+        example: {
+          status: 'error',
+          message: 'Internal server error',
+        },
+      },
+    },
   },
 };

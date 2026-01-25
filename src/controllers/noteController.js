@@ -4,12 +4,12 @@ const Notes = require('../models/Notes');
 // Get all notes
 module.exports.getAllNotes = async (req, res, next) => {
     try {
-        const notes = await Notes.find();
+        const note = await Notes.find();
 
         res.status(200).json({
             status: 'success',
-            count : notes.length,
-            data: notes
+            count : note.length,
+            data: note
         });
     } catch (err) {
         next(new AppError('Error fetching notes', 500));

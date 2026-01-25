@@ -1,4 +1,5 @@
 require("dotenv").config();
+
 const connectDB = require("./config/db");
 const redisClient = require("./config/redis");
 const sessionMiddleware = require("./config/session");
@@ -14,7 +15,8 @@ const PORT = process.env.PORT || 4000;
     const app = createApp(sessionMiddleware);
 
     app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
+      console.log(`Server running on port http://localhost:${PORT}`);
+      console.log(`API documentation available at http://localhost:${PORT}/api/docs`);
     });
   } catch (err) {
     console.error("Server failed to start:", err);

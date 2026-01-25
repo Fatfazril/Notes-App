@@ -1,4 +1,16 @@
 Building Notes Api using node js + mongodb + redis
 
 
+docs/
+├─ swagger.js                # Main Swagger configuration
+├─ paths/                    # API endpoints definition
+│  └─ note.path.js
+├─ components/
+│  ├─ schemas/               # Request & response schemas
+│  │  ├─ note.schema.js
+│  │  └─ response.schema.js
+│  ├─ responses/             # Reusable error responses
+│  │  └─ error.response.js
+│  └─ security/              # Authentication schemes
+│     └─ jwt.security.js
 

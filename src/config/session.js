@@ -14,4 +14,6 @@ const sessionConfig = session({
   },
 });
 
+console.log("SESSION_SECRET:", process.env.SESSION_SECRET);
+
 module.exports = sessionConfig;

@@ -7,10 +7,18 @@ module.exports = function createApp(sessionMiddleware) {
   const app = express();
 
   app.use(express.json());
-  app.use(sessionMiddleware);
+  // app.use(sessionMiddleware);
+  const cors = require("cors");
+  app.use(cors());
+
+
+  app.get('/', (req, res) => {
+    res.send('Api notes jalan');
+ });
 
   app.use("/api/notes", noteRoutes);
   app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 
   app.use(errorHandler);
 
