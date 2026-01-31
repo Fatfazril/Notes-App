@@ -1,0 +1,199 @@
+# Notes API – Backend Service
+
+RESTful Notes API built with **Node.js**, **Express**, **MongoDB**, **Redis**, and **Docker**.
+
+This backend service demonstrates clean architecture, standardized API responses, caching with Redis, API documentation using Swagger, and containerized deployment.
+
+---
+
+## ✨ Features
+
+- CRUD Notes (Create, Read, Update, Delete)
+- RESTful API with Express
+- MongoDB as primary database
+- Redis caching for read optimization
+- JWT Authentication
+- Swagger (OpenAPI) documentation
+- Postman collection for API testing
+- Docker & Docker Compose setup
+
+---
+
+## 🧱 Tech Stack
+
+- Node.js
+- Express.js
+- MongoDB (Mongoose)
+- Redis
+- JWT Authentication
+- Swagger (OpenAPI)
+- Postman
+- Docker
+
+---
+
+## 🏗️ High-Level Architecture
+
+Client (Frontend / Postman)
+↓
+Express Router
+↓
+Controller
+↓
+Redis Cache (Read)
+↓
+MongoDB
+↓
+Standardized Response
+
+
+---
+
+## 📂 Project Structure
+
+backend/
+├── src/
+│ ├── controllers/
+│ ├── routes/
+│ ├── models/
+│ ├── middlewares/
+│ ├── utils/
+│ └── docs/ # Swagger OpenAPI
+├── postman/
+│ └── notes-api.postman_collection.json
+├── Dockerfile
+├── docker-compose.yml
+├── package.json
+└── README.md
+
+
+---
+
+## 🔄 API Flow
+
+1. Client sends HTTP request
+2. Router matches endpoint
+3. JWT middleware validates token
+4. Controller handles business logic
+5. Redis is checked for cached data
+6. MongoDB is queried if cache miss
+7. API returns standardized response
+
+---
+
+## 📘 API Documentation Architecture
+
+This service uses **two complementary tools**.
+
+### Swagger (OpenAPI)
+Location: src/docs
+
+
+Purpose:
+- API contract
+- Request & response schemas
+- Error response definitions
+- JWT security specification
+
+Swagger UI:
+
+Swagger structure:
+
+docs/
+├─ index.js
+├─ paths/
+│ └─ note.path.js
+├─ components/
+│ ├─ schemas/
+│ │ ├─ note.schema.js
+│ │ └─ response.schema.js
+│ ├─ responses/
+│ │ └─ error.response.js
+│ └─ security/
+│ └─ jwt.security.js
+
+
+---
+
+### Postman
+Location:
+postman/notes-api.postman_collection.json
+
+
+Purpose:
+- Manual API testing
+- Example requests & responses
+- Easy import for reviewers
+
+---
+
+## 📦 API Response Format
+
+### Success
+```json
+{
+  "status": "success",
+  "data": {}
+}
+
+Error
+{
+  "status": "fail",
+  "message": "Error message"
+}
+
+🧠 Redis Caching Strategy
+
+Cache is used for read-heavy endpoints
+
+Redis is checked before MongoDB
+
+MongoDB remains the source of truth
+
+Cache is invalidated on write operations
+
+🐳 Docker Setup
+
+Run backend with all dependencies:
+
+docker-compose up --build
+
+
+Services included:
+
+API
+
+MongoDB
+
+Redis
+
+⚙️ Environment Variables
+
+Create a .env file:
+
+PORT=4000
+MONGO_URI=your_mongo_uri
+JWT_SECRET=your_jwt_secret
+REDIS_HOST=redis
+REDIS_PORT=6379
+
+🚀 Running the Backend
+
+Without Docker:
+
+npm install
+npm run dev
+
+
+With Docker:
+
+docker-compose up --build
+
+🧪 Testing
+
+Swagger UI for API documentation
+
+Postman collection for API testing
+
+Redis cache behavior can be observed via repeated requests
+

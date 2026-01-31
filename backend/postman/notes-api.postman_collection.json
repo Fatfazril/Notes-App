@@ -1,0 +1,225 @@
+{
+"info": {
+    "name": "Notes API",
+    "_postman_id": "b1c1d6a5-9e6a-4f2f-9b7d-123456789abc",
+    "description": "Postman collection for Notes API with automated tests",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+},
+"variable": [
+    {
+    "key": "base_url",
+    "value": "http://localhost:3000"
+    },
+    {
+    "key": "note_id",
+    "value": ""
+    }
+],
+"item": [
+    {
+    "name": "Get All Notes",
+    "request": {
+        "method": "GET",
+        "url": {
+        "raw": "{{base_url}}/api/notes",
+        "host": [
+            "{{base_url}}"
+        ],
+        "path": [
+            "api",
+            "notes"
+        ]
+        }
+    },
+    "event": [
+        {
+        "listen": "test",
+        "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "const res = pm.response.json();",
+              "",
+              "pm.test('Response status is success', () => {",
+              "  pm.expect(res.status).to.eql('success');",
+              "});",
+              "",
+              "pm.test('Data is array', () => {",
+              "  pm.expect(res.data).to.be.an('array');",
+              "});",
+            "",
+            "pm.test('Count matches data length', () => {",
+            "  pm.expect(res.count).to.eql(res.data.length);",
+            "});"
+            ]
+        }
+        }
+      ]
+    },
+    {
+      "name": "Create Note",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Belajar Backend\",\n  \"content\": \"Postman automated testing\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/notes",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "notes"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 201', () => {",
+              "  pm.response.to.have.status(201);",
+              "});",
+              "",
+              "const res = pm.response.json();",
+              "",
+              "pm.test('Note created successfully', () => {",
+              "  pm.expect(res.status).to.eql('success');",
+              "  pm.expect(res.data).to.have.property('_id');",
+              "});",
+              "",
+              "pm.environment.set('note_id', res.data._id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Get Note By ID",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/api/notes/{{note_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "notes",
+            "{{note_id}}"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "const res = pm.response.json();",
+              "",
+              "pm.test('Correct note returned', () => {",
+              "  pm.expect(res.data._id).to.eql(pm.environment.get('note_id'));",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Update Note",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Backend Updated\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/notes/{{note_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "notes",
+            "{{note_id}}"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Title updated', () => {",
+              "  pm.expect(pm.response.json().data.title).to.eql('Backend Updated');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Delete Note",
+      "request": {
+        "method": "DELETE",
+        "url": {
+          "raw": "{{base_url}}/api/notes/{{note_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "notes",
+            "{{note_id}}"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Status code is 200', () => {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Delete success message', () => {",
+              "  pm.expect(pm.response.json().message).to.include('deleted');",
+              "});"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
