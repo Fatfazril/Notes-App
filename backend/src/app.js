@@ -8,7 +8,7 @@ module.exports = function createApp(sessionMiddleware) {
   const app = express();
 
   app.use(express.json());
-  // app.use(sessionMiddleware);
+  app.use(sessionMiddleware);
   const cors = require("cors");
   app.use(cors());
 
