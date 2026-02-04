@@ -68,7 +68,7 @@ function CreateNotePage() {
           
           {/* Back Button */}
           <div className="mt-auto pt-4 border-t border-[#f0f2f4] dark:border-slate-800">
-             <Link to="/" className="w-full flex items-center justify-center gap-2 text-[#616f89] hover:text-[#111318] dark:text-slate-400 dark:hover:text-white font-medium py-2 rounded-xl transition-all">
+            <Link to="/" className="w-full flex items-center justify-center gap-2 text-[#616f89] hover:text-[#111318] dark:text-slate-400 dark:hover:text-white font-medium py-2 rounded-xl transition-all">
                 <span className="material-symbols-outlined">arrow_back</span>
                 <span className="text-sm">Cancel</span>
             </Link>
