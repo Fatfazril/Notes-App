@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getAllNotes, deleteNote } from "../services/note.service";
+import { getAllNotes, deleteNote } from "../../services/note.service";
 import { Link } from "react-router-dom";
 
 function NotesPage() {

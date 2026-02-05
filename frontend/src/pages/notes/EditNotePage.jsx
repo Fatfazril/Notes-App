@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { getNoteById, updateNote } from "../services/note.service";
+import { getNoteById, updateNote } from "../../services/note.service";
 
 function EditNotePage() {
   const { id } = useParams();

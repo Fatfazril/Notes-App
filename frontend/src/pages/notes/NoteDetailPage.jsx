@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { getNoteById, deleteNote } from "../services/note.service";
+import { getNoteById, deleteNote } from "../../services/note.service";
 
 function NoteDetailPage() {
   const { id } = useParams();
