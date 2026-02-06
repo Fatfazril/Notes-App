@@ -7,13 +7,11 @@ export function AuthProvider({ children }) {
     !!localStorage.getItem("accessToken")
   );
 
-  // dipanggil setelah login sukses
   const login = (token) => {
     localStorage.setItem("accessToken", token);
     setIsAuth(true);
   };
 
-  // dipanggil saat logout
   const logout = () => {
     localStorage.removeItem("accessToken");
     setIsAuth(false);
@@ -26,6 +24,7 @@ export function AuthProvider({ children }) {
   );
 }
 
-// helper biar gampang dipakai
 // eslint-disable-next-line react-refresh/only-export-components
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => {
+  return useContext(AuthContext);
+};

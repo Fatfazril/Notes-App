@@ -1,9 +1,13 @@
-import axios from "axios";
+import { api } from "./api";
 
 export const registerUser = (data) => {
-  return axios.post("/api/auth/register", data);
+  return api.post("/auth/register", data);
 };
 
 export const loginUser = (data) => {
-  return axios.post("/api/auth/login", data);
+  return api.post("/auth/login", data);
+};
+
+export const logoutUser = () => {
+  return api.post("/auth/logout");
 };
