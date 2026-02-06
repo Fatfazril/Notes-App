@@ -1,16 +1,9 @@
-import { api } from "./api";
+import axios from "axios";
 
-//Register User
-export const Register = () =>{
-    return api.post("/register")
-}
+export const registerUser = (data) => {
+  return axios.post("/api/auth/register", data);
+};
 
-//Login User
-export const Login = () => {
-    return api.post("/login")
-}
-
-//Logout User
-export const LogOut = () => {
-    return api.post("/logout")
-}
+export const loginUser = (data) => {
+  return axios.post("/api/auth/login", data);
+};
