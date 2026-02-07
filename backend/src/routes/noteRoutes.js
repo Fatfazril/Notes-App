@@ -1,5 +1,7 @@
 const express = require("express");
 const noteController = require("../controllers/noteController");
+const validate = require ('../middlewares/validate.js')
+const NoteValidation = require( "../validation/noteValidation.js")
 
 const router = express.Router();
 
@@ -10,10 +12,10 @@ router.get("/", noteController.getAllNotes);
 router.get("/:id", noteController.getNoteById);
 
 // Create note
-router.post("/", noteController.createNote);
+router.post("/",  validate(NoteValidation) , noteController.createNote);
 
 // Update note
-router.put("/:id", noteController.updateNote);
+router.put("/:id", validate(NoteValidation) , noteController.updateNote);
 
 // Delete note
 router.delete("/:id", noteController.deleteNote);
