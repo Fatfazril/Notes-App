@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const { boolean } = require('joi');
 
 
 const userSchema = new mongoose.Schema({
@@ -7,14 +8,42 @@ const userSchema = new mongoose.Schema({
         type : String,
         required : true,
         unique : true,
+        lowercase : true,
+        trim : true
     },
     username : {
         type : String,
         required : true,
+        trim : true
     },
     password : {
         type : String,
         required : true,
+        select : false
+    },
+
+    // User Settings
+    setting : {
+        theme : {
+            type : String,
+            enum : ['light', 'dark', 'system'],
+            default : 'system'
+        },
+        font : {
+            type : String,
+            default : 'inter'
+        },
+        fontSize : {
+            type : Number,
+            default : 16
+        },
+        
+    },
+    
+    //Account State
+    isActive: {
+        type: Boolean,
+        default: true
     }
 })
 
