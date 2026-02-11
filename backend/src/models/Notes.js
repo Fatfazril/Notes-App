@@ -2,14 +2,16 @@ const mongoose = require('mongoose');
 
 const noteSchema = new mongoose.Schema({
     
-    user : {
-        ref : "User", 
-        type : mongoose.Schema.Types.ObjectId,
-        required : true
-    },
+    // owner : {
+    //     ref : "User", 
+    //     type : mongoose.Schema.Types.ObjectId,
+    //     required : true,
+    //     index : true
+    // },
     folder : {
         ref : "Folder", 
         type : mongoose.Schema.Types.ObjectId,
+        default : null
     },
     title : {
         type: String,

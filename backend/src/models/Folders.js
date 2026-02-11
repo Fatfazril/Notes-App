@@ -1,37 +1,31 @@
 const mongoose = require("mongoose");
 
-const folderSchema = new mongoose.Schema ({
-    name :{
-        type : String,
-        required : true
-    },
-    slug : {
-        type : String,
-        required : true
-    },
-    owner : {
-        ref : "User",
-        type : mongoose.Schema.Types.ObjectId,
-        required : true
+const folderSchema = new mongoose.Schema({
+    name: {
+    type: String,
+    required: true,
+    trim: true
     },
 
-    //Sharing And Role
+    slug: {
+    type: String,
+    required: true,
+    lowercase: true,
+    trim: true
+    },
 
-    members : [
-        {
-            user : {
-                ref : "User", 
-                type : mongoose.Schema.Types.ObjectId,
-            },
-            role : {
-                type : String,
-                enum : ["owner", "editor", "viewer"],
-                default : "viewer"
-            }
-        }
-    ]
+    owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+    index: true
+    },
 
+    isDeleted: {
+    type: Boolean,
+    default: false
+    }
 
-}, {timestamps : true})
+}, { timestamps: true });
 
 module.exports = mongoose.model("Folder", folderSchema);
