@@ -115,3 +115,27 @@ module.exports.logout = async (req, res) => {
     }
 };
 
+module.exports.refreshToken = async (req, res) => {
+  const token = req.cookies.refreshToken;
+
+  if (!token) {
+    return res.status(401).json({ message: 'No refresh token' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    const storedToken = await redisClient.get(`refreshToken:${decoded.id}`);
+
+    if (!storedToken || storedToken !== token) {
+      return res.status(403).json({ message: 'Invalid refresh token' });
+    }
+
+    const newAccessToken = generateToken(decoded.id, '15m');
+
+    return res.json({ accessToken: newAccessToken });
+
+  } catch (err) {
+    return res.status(403).json({ message: 'Invalid or expired refresh token' });
+  }
+};
