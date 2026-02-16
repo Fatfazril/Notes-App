@@ -84,58 +84,43 @@ module.exports.Login = async (req , res) => {
 }
 
 module.exports.logout = async (req, res) => {
-    try {
-        const userId = req.user?.id;
+    const token = req.cookies.refreshToken;
 
-        // 1. Delete refresh token from Redis
-        if (userId) {
-            await redisClient.del(`refreshToken:${userId}`);
-        }
+    if (token) {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    await redisClient.del(`refreshToken:${decoded.id}`);
+    } 
 
-        // 2. Destroy session
-        req.session.destroy(() => {
-            // 3. Clear refresh token cookie
-            res.clearCookie("refreshToken", {
-                httpOnly: true,
-                secure: true,
-                sameSite: "strict"
-            });
+    res.clearCookie('refreshToken', {
+        httpOnly: true,
+        sameSite: 'strict',
+        secure: process.env.NODE_ENV === 'production'
+    });
 
-            return res.json({
-                success: true,
-                message: "Logged out successfully"
-            });
-        });
-
-    } catch (err) {
-        return res.status(500).json({
-            success: false,
-            message: "Failed to logout"
-        });
-    }
+    return res.json({ message: 'Logged out successfully' });
 };
 
 module.exports.refreshToken = async (req, res) => {
-  const token = req.cookies.refreshToken;
+    const token = req.cookies.refreshToken;
 
-  if (!token) {
-    return res.status(401).json({ message: 'No refresh token' });
-  }
+    if (!token) {
+        return res.status(401).json({ message: 'No refresh token' });
+    }
 
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    const storedToken = await redisClient.get(`refreshToken:${decoded.id}`);
+        const storedToken = await redisClient.get(`refreshToken:${decoded.id}`);
 
-    if (!storedToken || storedToken !== token) {
-      return res.status(403).json({ message: 'Invalid refresh token' });
+        if (!storedToken || storedToken !== token) {
+    return res.status(403).json({ message: 'Invalid refresh token' });
     }
 
     const newAccessToken = generateToken(decoded.id, '15m');
 
     return res.json({ accessToken: newAccessToken });
 
-  } catch (err) {
-    return res.status(403).json({ message: 'Invalid or expired refresh token' });
-  }
+    } catch (err) {
+        return res.status(403).json({ message: 'Invalid or expired refresh token' });
+    }
 };
