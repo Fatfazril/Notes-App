@@ -3,9 +3,9 @@ const Joi = require("joi");
 module.exports.noteValidation = Joi.object({
     title: Joi.string().min(3).max(100).required(),
     content: Joi.string().min(3).required()
-})
+}).unknown(false)
 
 module.exports.noteUpdateValidation = Joi.object({
     title: Joi.string().min(3).max(100),
     content: Joi.string().min(3)
-})  
+}).unknown(false)  

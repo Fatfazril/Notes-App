@@ -1,5 +1,6 @@
 const User = require('../models/Users');
 const generateToken = require('../utils/token');
+const redisClient = require('../config/redis');
 
 // Register User
 module.exports.register = async (req , res) => {
@@ -34,11 +35,11 @@ module.exports.register = async (req , res) => {
 }
 
 // Login User
-module.exports.Login = async (req , res) => {
+module.exports.login = async (req , res) => {
     try {
         const { email , password} = req.body;
 
-        const user = await User.findOne({email});
+        const user = await User.findOne({email}).select("+password");
         if(!user) {
             return res.status(401).json({
                 success: false,
@@ -54,10 +55,10 @@ module.exports.Login = async (req , res) => {
             })
         }
 
-        req.session.userId = user._id;
-
         const accessToken = generateToken(user._id);
         const refreshToken = generateToken(user._id, '7d');
+
+        await redisClient.set(`refreshToken:${user._id}`, refreshToken, 'EX', 7 * 24 * 60 * 60);
 
         res.cookie('refreshToken', refreshToken, {
             httpOnly: true,
@@ -100,27 +101,39 @@ module.exports.logout = async (req, res) => {
     return res.json({ message: 'Logged out successfully' });
 };
 
-module.exports.refreshToken = async (req, res) => {
-    const token = req.cookies.refreshToken;
-
-    if (!token) {
-        return res.status(401).json({ message: 'No refresh token' });
-    }
-
+module.exports.refreshToken = async (req , res) => {
     try {
+        const token = req.cookies.refreshToken;
+
+        if(!token) {
+            return res.status(401).json({
+                success: false,
+                message: 'No refresh token'
+            })
+        }
+
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
         const storedToken = await redisClient.get(`refreshToken:${decoded.id}`);
 
-        if (!storedToken || storedToken !== token) {
-    return res.status(403).json({ message: 'Invalid refresh token' });
-    }
+        if(!storedToken || storedToken !== token) {
+            return res.status(403).json({
+                success: false,
+                message: 'Invalid refresh token'
+            })
+        }
 
-    const newAccessToken = generateToken(decoded.id, '15m');
+        const newAccessToken = generateToken(decoded.id, '15m');
 
-    return res.json({ accessToken: newAccessToken });
-
+        return res.json({
+            success: true,
+            message: 'Refresh token successful',
+            accessToken: newAccessToken
+        })
     } catch (err) {
-        return res.status(403).json({ message: 'Invalid or expired refresh token' });
+        return res.status(500).json({
+            success: false,
+            message: 'Internal Server error'
+        });
     }
-};
+}
