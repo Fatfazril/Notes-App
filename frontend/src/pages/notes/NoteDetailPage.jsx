@@ -137,8 +137,8 @@ function NoteDetailPage() {
                 {/* Loading State */}
                 {loading && (
                     <div className="flex flex-col items-center justify-center h-64">
-                         <div className="animate-spin size-8 border-4 border-primary border-t-transparent rounded-full mb-4"></div>
-                         <p className="text-gray-500">Loading note...</p>
+                        <div className="animate-spin size-8 border-4 border-primary border-t-transparent rounded-full mb-4"></div>
+                        <p className="text-gray-500">Loading note...</p>
                     </div>
                 )}
 
