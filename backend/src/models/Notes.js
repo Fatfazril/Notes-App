@@ -2,12 +2,12 @@ const mongoose = require('mongoose');
 
 const noteSchema = new mongoose.Schema({
     
-    // owner : {
-    //     ref : "User", 
-    //     type : mongoose.Schema.Types.ObjectId,
-    //     required : true,
-    //     index : true
-    // },
+    owner : {
+        ref : "User", 
+        type : mongoose.Schema.Types.ObjectId,
+        required : true,
+        index : true
+    },
     folder : {
         ref : "Folder", 
         type : mongoose.Schema.Types.ObjectId,

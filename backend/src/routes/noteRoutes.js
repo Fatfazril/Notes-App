@@ -10,13 +10,13 @@ const router = express.Router();
 router.get("/", noteController.getAllNotes);
 
 // Get note by ID
-router.get("/:id", noteController.getNoteById);
+router.get("/:id", noteController.getNoteById)
 
 // Create note
-router.post("/",  validate(noteValidation) , authMiddleware, noteController.createNote);
+router.post("/", authMiddleware, validate(noteValidation) , noteController.createNote);
 
 // Update note
-router.put("/:id", validate(noteUpdateValidation) , authMiddleware, noteController.updateNote);
+router.put("/:id", authMiddleware, validate(noteUpdateValidation) ,noteController.updateNote);
 
 // Delete note
 router.delete("/:id", authMiddleware, noteController.deleteNote);
