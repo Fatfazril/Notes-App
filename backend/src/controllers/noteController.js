@@ -4,7 +4,10 @@ const Notes = require('../models/Notes');
 // Get all notes
 module.exports.getAllNotes = async (req, res, next) => {
     try {
-        const note = await Notes.find();
+        const note = await Notes.find({
+            owner : req.user.id,
+            isDeleted : false,
+        });
 
         res.status(200).json({
             status: 'success',
@@ -19,7 +22,12 @@ module.exports.getAllNotes = async (req, res, next) => {
 // Get note by ID
 module.exports.getNoteById = async (req, res, next) => {
     try {
-        const note = await Notes.findById(req.params.id);
+        const note = await Notes.findOne({
+            _id : req.params.id,
+            owner : req.user.id,
+            isDeleted : false
+        });
+
         if(!note) {
             return next(new AppError('Note not found' , 404));
         }
@@ -35,13 +43,13 @@ module.exports.getNoteById = async (req, res, next) => {
 // Create new note
 module.exports.createNote = async (req , res , next) => {
     try {
-        const {title, content} = req.body;
-        
-        if(!title || !content) {
-            return next(new AppError('Title and Content are required' , 400));
-        }
 
-        const newNote = await Notes.create({ title, content });
+        const newNote = await Notes.create({ 
+            title : req.body.title, 
+            content : req.body.content,
+            owner : req.user.id
+        });
+
         res.status(201).json({
             status: 'success',
             data: newNote
@@ -54,9 +62,11 @@ module.exports.createNote = async (req , res , next) => {
 // Update note
 module.exports.updateNote = async (req , res , next) => {
     try {
-        const note = await Notes.findByIdAndUpdate(
-            req.params.id, 
-            req.body, 
+        const note = await Notes.findOneAndUpdate({
+            _id : req.params.id,
+            owner : req.user.id 
+            },
+            req.body,
             { new: true, runValidators: true }
         );
 
@@ -75,13 +85,24 @@ module.exports.updateNote = async (req , res , next) => {
 };
 
 // Delete note
+
 module.exports.deleteNote = async (req , res , next) => {
     try {
-        const note = await Notes.findByIdAndDelete(req.params.id);
+        const note = await Notes.findOneAndUpdate(
+            {
+                _id : req.params.id,
+                owner : req.user.id,
+                isDeleted : false
+            },
+            {
+                idDeleted : true,
+                deletedAt : new Date()
+            }
+        )
 
         if(!note) {
             return next(new AppError('Note not found' , 404));
-        }   
+        }
 
         res.status(200).json({
             status : 'success',

@@ -7,10 +7,10 @@ const {noteValidation, noteUpdateValidation} = require( "../validation/noteValid
 const router = express.Router();
 
 // Get all notes
-router.get("/", noteController.getAllNotes);
+router.get("/", authMiddleware, noteController.getAllNotes);
 
 // Get note by ID
-router.get("/:id", noteController.getNoteById)
+router.get("/:id", authMiddleware, noteController.getNoteById)
 
 // Create note
 router.post("/", authMiddleware, validate(noteValidation) , noteController.createNote);
