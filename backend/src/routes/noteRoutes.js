@@ -21,4 +21,6 @@ router.put("/:id", authMiddleware, validate(noteUpdateValidation) ,noteControlle
 // Delete note
 router.delete("/:id", authMiddleware, noteController.deleteNote);
 
+router.get("/trash", authMiddleware, noteController.getTrashNotes);
+
 module.exports = router;

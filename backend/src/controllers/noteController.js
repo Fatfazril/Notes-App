@@ -106,9 +106,26 @@ module.exports.deleteNote = async (req , res , next) => {
 
         res.status(200).json({
             status : 'success',
-            message : 'Note deleted successfully'
+            message : 'Note moved to trash'
         });
     } catch (err) {
         next(new AppError('Error deleting note', 500));
     }
 };
+
+module.exports.getTrashNotes = async (req , res , next) => {
+    try {
+        const notes = await Notes.find({
+            // owner : req.user.id,
+            isDeleted: true
+        });
+
+        res.status(200).json({
+            status : success,
+            count : notes.length,
+            data : notes
+        })
+    } catch (err) {
+        next(new AppError('Error fetching notes', 500));
+    }
+}

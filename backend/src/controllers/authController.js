@@ -55,8 +55,6 @@ module.exports.login = async (req , res) => {
             })
         }
 
-        req.session.userId = user._id;
-
         const accessToken = generateToken(user._id);
         const refreshToken = generateToken(user._id, '7d');
 
