@@ -135,9 +135,25 @@ module.exports.restoreNote = async (req, res, next) => {
         const note = await Notes.findOneAndUpdate({
             _id : req.params.id,
             owner : req.user.id,
-            idDeleted : true
+            isDeleted : true
+        },
+        {
+            isDeleted : false,
+            deletedAt : null
+        },
+        { new : true,  }
+        )
+
+        if(!note) {
+            return next(new AppError('Note not found' , 404));
+        }
+
+        res.status(200).json({
+            status : 'success',
+            message : 'Note restored successfully',
+            data : note
         })
     } catch (err) {
-        
+        next(new AppError('Error restoring note', 500));
     }
 }
