@@ -157,3 +157,24 @@ module.exports.restoreNote = async (req, res, next) => {
         next(new AppError('Error restoring note', 500));
     }
 }
+
+module.exports.deletePermanent = async (req , res , next) => {
+    try {
+        const note = await Notes.findOneAndDelete({
+            _id : req.params.id,
+            owner : req.user.id,
+            isDeleted : true
+        })
+
+        if(!note) {
+            return next (new AppError("Note not found" , 404));
+        }
+
+        res.status(200).json({
+            status : 'success',
+            message : 'Note deleted permanently'
+        })
+    } catch (err) {
+        next(new AppError('Error deleting note', 500));
+    }
+}

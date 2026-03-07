@@ -27,4 +27,7 @@ router.patch("/:id/restore", authMiddleware, noteController.restoreNote);
 // Soft delete
 router.delete("/:id", authMiddleware, noteController.deleteNote);
 
+// Delete permanent
+router.delete("/:id/permanent", authMiddleware, noteController.deletePermanent);
+
 module.exports = router;
