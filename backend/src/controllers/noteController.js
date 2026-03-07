@@ -95,7 +95,7 @@ module.exports.deleteNote = async (req , res , next) => {
                 isDeleted : false
             },
             {
-                idDeleted : true,
+                isDeleted : true,
                 deletedAt : new Date()
             }
         )
@@ -116,16 +116,28 @@ module.exports.deleteNote = async (req , res , next) => {
 module.exports.getTrashNotes = async (req , res , next) => {
     try {
         const notes = await Notes.find({
-            // owner : req.user.id,
+            owner : req.user.id,
             isDeleted: true
         });
 
         res.status(200).json({
-            status : success,
+            status : "success",
             count : notes.length,
             data : notes
         })
     } catch (err) {
         next(new AppError('Error fetching notes', 500));
+    }
+}
+
+module.exports.restoreNote = async (req, res, next) => {
+    try {
+        const note = await Notes.findOneAndUpdate({
+            _id : req.params.id,
+            owner : req.user.id,
+            idDeleted : true
+        })
+    } catch (err) {
+        
     }
 }
